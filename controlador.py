@@ -1,28 +1,8 @@
-#
-#   Hello World server in Python
-#   Binds REP socket to tcp://*:5555
-#   Expects b"Hello" from client, replies with b"World"
-#
-
-# import time
-# import zmq
-
-# context = zmq.Context()
-# socket = context.socket(zmq.REP)
-# socket.bind("tcp://*:5555")
-
-# dirs = []
-
-# def getIps():
-#     for _ in range(4):
-#         dirs.append(socket.recv())
-#         socket.send(b"conectado")
-
-#     print(dirs)
-
 import zmq
 import json
+from time import sleep
 
+colores = ['R', 'G', 'B', 'Y']
 players = []
 
 class Controlador():
@@ -34,22 +14,41 @@ class Controlador():
         self.servidor.bind("tcp://*:5555")
         
         
-    def getIps(self):
-        for _ in range(4):
+    def waitForPlayers(self):
+        for _ in range(2):
             rPacket = json.loads(self.servidor.recv())
-            print(rPacket)
-            players.append(rPacket['nombre'])
+            players.append(rPacket)
             self.servidor.send_string("conectado")
             
     def clearIps(self):
         players.clear()
         
-    def boradCast():
+    def waitForDice(self, player):
+        sleep(2)
+        ip = player['ip']
+        puerto = player['puerto']
+        nombre = player['nombre']
+        print(player)
+        
+        direction = "tcp://{}:{}".format(ip, puerto)
+        
+        self.cliente.connect(direction)
+        
+        self.cliente.send_string("Es tu turno {}".format(nombre))
+        diceResult = self.cliente.recv()
+        
+        self.cliente.disconnect(direction)
+        print(json.loads(diceResult))
+        
+    def broadCast():
         pass
         
 
 control = Controlador()
-control.getIps()
-print(players)
-control.clearIps()
-print(players)
+control.waitForPlayers()
+for player in players:
+    
+for player in players:
+    print(player)
+    control.waitForDice(player)
+    sleep(2)

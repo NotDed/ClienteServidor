@@ -1,4 +1,8 @@
-import socket
+from socket import gethostbyname, gethostname
+from random import randint
 
 def getMyIp():
-    return socket.gethostbyname(socket.gethostname())
+    return gethostbyname(gethostname())
+
+def rollTheDice(diceSize = 5):
+    return randint(1,diceSize)

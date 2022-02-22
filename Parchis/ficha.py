@@ -7,13 +7,12 @@ turn_pontis = [
     (2,6), (2,4), (0,4),
 ]
 
-end_points = [
-    (0,3),
-    (3,0),
-    (6,3),
-    (3,6)
-]
-
+end_points = {
+    'R':(0,3),
+    'G':(3,0),
+    'B':(6,3),
+    'Y':(3,6)
+}
 jails = [
     (0,0), (0,1), (1,0), (1,1),
     (5,0), (5,1), (6,0), (6,1),
@@ -21,12 +20,12 @@ jails = [
     (0,5), (0,6), (1,5), (1,6)
 ]
 
-starts = [
-    (1,2),
-    (4,1),
-    (5,4),
-    (2,5),
-]
+starts = {
+    'R':(1,2),
+    'G':(4,1),
+    'B':(5,4),
+    'Y':(2,5)
+}
 
 goal = (3,3)
 
@@ -40,29 +39,29 @@ dirs = {
 
 class Ficha():
     
-    def __init__(self):
+    def __init__(self, color):
         self.x = 0
         self.y = 0
         self.lap = 0
-        self.color = 1
+        self.color = color
         self.inTurn = 0
         self.inJail = False
         
     def setStart(self):
-        self.x, self.y = starts[self.color-1]
+        self.x, self.y = starts[self.color[0]]
         
     def getPos(self):
         return (self.x, self.y)
         
     def setSequence(self):
         self.seqStep = 0
-        if self.color == 1:
+        if self.color[0] == 'R':
             self.seq = ('D', 'L', 'D', 'R', 'D', 'R', 'U', 'R', 'U', 'L', 'U', 'L', 'D')
-        elif self.color == 2:
+        elif self.color[0] == 'G':
             self.seq = ('R', 'D', 'R', 'U', 'R', 'U', 'L', 'U', 'L', 'D', 'L', 'D', 'R')
-        elif self.color == 3:
+        elif self.color[0] == 'B':
             self.seq = ('U', 'R', 'U', 'L', 'U', 'L', 'D', 'L', 'D', 'R', 'D', 'R', 'U')
-        elif self.color == 4:
+        elif self.color[0] == 'Y':
             self.seq = ('L', 'U', 'L', 'D', 'L', 'D', 'R', 'D', 'R', 'U', 'R', 'U', 'L')
             
     def shiftSeq(self):
@@ -71,32 +70,32 @@ class Ficha():
     def sendToJail(self):
         self.inJail = True
         self.setSequence()
-        if self.color == 1:
+        if self.color[0] == 'R':
             self.x = 0
             self.y = 0
-        elif self.color == 2:
+        elif self.color[0] == 'G':
             self.x = 5
             self.y = 0
-        elif self.color == 3:
+        elif self.color[0] == 'B':
             self.x = 5
             self.y = 5
-        elif self.color == 4:
+        elif self.color[0] == 'Y':
             self.x = 0
             self.y = 5
             
     def scapeJail(self):
         print(str(self.color) + ' escapo de la carcel')
         self.inJail = False
-        if self.color == 1:
+        if self.color[0] == 'R':
             self.x = 1
             self.y = 2
-        elif self.color == 2:
+        elif self.color[0] == 'G':
             self.x = 4
             self.y = 1
-        elif self.color == 3:
+        elif self.color[0] == 'B':
             self.x = 5
             self.y = 4
-        elif self.color == 4:
+        elif self.color[0] == 'Y':
             self.x = 2
             self.y = 5
             
@@ -110,7 +109,7 @@ class Ficha():
             self.y = self.y + dirs[self.seq[self.seqStep]][1]
             if (self.x, self.y) in turn_pontis:
                 self.shiftSeq()
-            if (self.x, self.y) == end_points[self.color-1]:
+            if (self.x, self.y) == end_points[self.color[0]]:
                 print(str(self.color) + ' llegó a su meta')
                 print()
                 self.shiftSeq()
