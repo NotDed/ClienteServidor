@@ -1,8 +1,5 @@
 from colorama import Fore, Style
 
-from ficha import Ficha
-
-
 class Tablero():
     def __init__(self, dim = 7):
         self.dim = dim
@@ -43,18 +40,14 @@ class Tablero():
         for casilla in self.casillas:
             for casillita in casilla:
                 if(casillita[0] == 'R'):
-                    print(f"{Fore.RED}{casillita}{Style.RESET_ALL}", end ='')
+                    print(f"{Fore.RED}♟{casillita[1]}{Style.RESET_ALL}", end ='')
                 elif(casillita[0] == 'G'):
-                    print(f"{Fore.GREEN}{casillita}{Style.RESET_ALL}", end ='')
+                    print(f"{Fore.GREEN}♟{casillita[1]}{Style.RESET_ALL}", end ='')
                 elif(casillita[0] == 'B'):
-                    print(f"{Fore.BLUE}{casillita}{Style.RESET_ALL}", end ='')
+                    print(f"{Fore.BLUE}♟{casillita[1]}{Style.RESET_ALL}", end ='')
                 elif(casillita[0] == 'Y'):
-                    print(f"{Fore.YELLOW}{casillita}{Style.RESET_ALL}", end ='')
+                    print(f"{Fore.YELLOW}♟{casillita[1]}{Style.RESET_ALL}", end ='')
                 else:
                     print('▢ ', end ='')
             print()
-            
-    def createPieces(self, pieceCount = 1):
-        colores = ['R', 'G', 'B', 'Y']
-        for color in colores:
-            for pieza in range(pieceCount)
+                

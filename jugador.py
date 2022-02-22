@@ -1,9 +1,8 @@
 import zmq
 import json
+import os
 
-import time
-
-from utilityFunct import getMyIp, rollTheDice
+from utilityFunct import getMyIp, rollTheDice, prettyPrint
 
 context = zmq.Context()
 
@@ -30,9 +29,26 @@ class Jugador():
         print(message)
         
     def waitMyTurn(self):
-        mensaje = str(self.servidor.recv())
-        print(mensaje)
-        dados = [rollTheDice(), rollTheDice()]
-        dados =  json.dumps(dados)
-        print(dados)
-        self.servidor.send_string(dados)
+        mensaje = json.loads(self.servidor.recv())
+        if mensaje[0] == 'dice':
+            print(mensaje[1])
+            dados = [rollTheDice(), rollTheDice()]
+            dados =  json.dumps(dados)
+            print(dados)
+            self.servidor.send_string(dados)
+            return False
+        if mensaje[0] == 'table':
+            os.system('cls')
+            prettyPrint(mensaje[1])
+            self.servidor.send_string('_')
+            return False
+        if mensaje[0] == 'end':
+            self.servidor.send_string('_')
+            return True
+            
+        return True
+    
+    def getBroadcast(self):
+        rPacket = json.loads(self.servidor.recv())
+        prettyPrint(rPacket[1])
+        self.servidor.send_string("_")
